@@ -7,10 +7,13 @@ metadata:
 spec:
   type: {{ .Values.relay.service.type }}
   ports:
+    # targetPort: websocket — o relay-deployment expõe as portas nomeadas
+    # `quic` (UDP), `websocket` (TCP) e `metrics` (TCP). NÃO existe porta
+    # `http`: apontar targetPort para ela tornava este Service não-funcional.
     - port: {{ .Values.relay.service.port }}
-      targetPort: http
+      targetPort: websocket
       protocol: TCP
-      name: http
+      name: websocket
     - port: {{ .Values.relay.metrics.port }}
       targetPort: metrics
       protocol: TCP
