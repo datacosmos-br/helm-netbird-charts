@@ -148,3 +148,18 @@ ready to interpolate inside the management.json PKCE RedirectURLs array.
 {{- end -}}
 {{- join "," $urls -}}
 {{- end -}}
+
+{{/*
+Build IdpManagerConfig.ExtraConfig. NetBird builds the IdP manager from
+ClientConfig + ExtraConfig (management/server/idp/idp.go NewManager);
+ExtraConfig holds provider-specific keys. For Keycloak the admin REST
+endpoint is read from ExtraConfig["AdminEndpoint"], so it is injected
+automatically from idp.adminEndpoint.
+*/}}
+{{- define "netbird.idpExtraConfig" -}}
+{{- $extra := deepCopy (.Values.idp.extraConfig | default dict) -}}
+{{- if and (eq (lower (.Values.idp.managerType | default "none")) "keycloak") .Values.idp.adminEndpoint -}}
+{{- $_ := set $extra "AdminEndpoint" .Values.idp.adminEndpoint -}}
+{{- end -}}
+{{- $extra | toJson -}}
+{{- end -}}

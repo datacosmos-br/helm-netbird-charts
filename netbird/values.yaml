@@ -117,9 +117,10 @@ idp:
   ##
   authIssuer: ""
 
-  ## @param idp.extraConfig Extra IdP manager configuration as a JSON object string.
+  ## @param idp.extraConfig Extra IdP manager config (map of provider-specific
+  ## keys). For Keycloak the AdminEndpoint is auto-added from idp.adminEndpoint.
   ##
-  extraConfig: "{}"
+  extraConfig: {}
 
 stun:
   ## @param stun.uri
