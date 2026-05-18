@@ -67,7 +67,13 @@
         "ExtraConfig": ${NETBIRD_IDP_MGMT_EXTRA_CONFIG},
         "Auth0ClientCredentials": null,
         "AzureClientCredentials": null,
-        "KeycloakClientCredentials": null,
+        "KeycloakClientCredentials": {
+            "ClientID": "${NETBIRD_IDP_MGMT_CLIENT_ID}",
+            "ClientSecret": "${NETBIRD_IDP_MGMT_CLIENT_SECRET}",
+            "GrantType": "client_credentials",
+            "TokenEndpoint": "${NETBIRD_AUTH_TOKEN_ENDPOINT}",
+            "AdminEndpoint": "${NETBIRD_IDP_KEYCLOAK_ADMIN_ENDPOINT}"
+        },
         "ZitadelClientCredentials": null
     },
     "DeviceAuthorizationFlow": {
