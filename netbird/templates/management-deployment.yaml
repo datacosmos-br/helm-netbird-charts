@@ -124,6 +124,10 @@ spec:
               {{- end }}
             - name: NETBIRD_IDP_MGMT_EXTRA_CONFIG
               value: {{ .Values.idp.extraConfig | default "{}" | quote }}
+            # Keycloak IdP manager — AdminEndpoint is required by the NetBird
+            # Keycloak manager (the flat ClientConfig does not carry it).
+            - name: NETBIRD_IDP_KEYCLOAK_ADMIN_ENDPOINT
+              value: {{ .Values.idp.adminEndpoint | default "" | quote }}
             # Device authorization flow (CLI clients)
             - name: NETBIRD_AUTH_DEVICE_AUTH_PROVIDER
               value: {{ .Values.auth.device.provider | default "none" | quote }}
