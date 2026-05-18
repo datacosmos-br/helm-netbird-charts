@@ -1,0 +1,21 @@
+netbird/Chart.yaml
+  s_6528b7ef0b85b1::t_0e837ac8441e95 6,15
+netbird/templates/relay-service.yaml
+  s_6528b7ef0b85b1::t_84a786e2d094d5 10-12,14,16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "f9eb39bc6a3523e5f2b289391ab0702b4ec5188e",
+  "prompts": {},
+  "sessions": {
+    "s_6528b7ef0b85b1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "28ff7b73-c6fc-49eb-9a8b-38548603b9da",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Marlon Costa <marlon.costa@datacosmos.com.br>"
+    }
+  }
+}
