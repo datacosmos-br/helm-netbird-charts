@@ -11,6 +11,59 @@ auth:
   authority: http://keycloak.localtest.me:9000/realms/helm-charts
   # authority: https://<tenant-name>.us.auth0.com
 
+  ## @param auth.userIDClaim JWT claim used as the NetBird user ID.
+  ##
+  userIDClaim: sub
+
+  ## @param auth.jwtKeysLocation Explicit JWKS URL. Empty derives it from OIDC discovery.
+  ##
+  jwtKeysLocation: ""
+
+  ## PKCE authorization flow — used by browser-based clients and the dashboard.
+  pkce:
+    ## @param auth.pkce.audience Audience expected in PKCE tokens. Empty falls back to auth.audience.
+    ##
+    audience: ""
+
+    ## @param auth.pkce.clientID OpenID Connect client ID for the PKCE flow.
+    ##
+    clientID: ""
+
+    ## @param auth.pkce.clientSecret OIDC client secret. Prefer auth.pkce.secretKeyRef.
+    ##
+    clientSecret: ""
+
+    ## @param auth.pkce.secretKeyRef Reference a Secret holding the PKCE client secret.
+    ##
+    secretKeyRef:
+      {}
+      # name: netbird-pkce-credentials
+      # key: clientSecret
+
+    ## @param auth.pkce.authorizationEndpoint OIDC authorization endpoint for the PKCE flow.
+    ##
+    authorizationEndpoint: ""
+
+    ## @param auth.pkce.supportedScopes Space-separated OIDC scopes for the PKCE flow.
+    ##
+    supportedScopes: openid profile email offline_access api
+
+    ## @param auth.pkce.redirectURLs Allowed PKCE redirect URLs (list of strings).
+    ##
+    redirectURLs: []
+
+    ## @param auth.pkce.useIDToken Use the ID token instead of the access token.
+    ##
+    useIDToken: false
+
+    ## @param auth.pkce.disablePromptLogin Disable the forced login prompt.
+    ##
+    disablePromptLogin: false
+
+    ## @param auth.pkce.loginFlag NetBird PKCE login flag (default 0).
+    ##
+    loginFlag: 0
+
   device:
     ## @param auth.device.provider
     ##
@@ -25,22 +78,48 @@ auth:
     # useIDToken: false
 
 idp:
-  ## @param idp.managerType none, keycloak, or auth0
+  ## @param idp.managerType IdP manager: none, keycloak, auth0, azure, or zitadel.
   ##
   managerType: none
-  # clientID:
-  # secretKeyRef:
-  #   name: idp-credentials
-  #   key: secretkey
-  # grantType:
 
-  # Auth0
-  # audience:
-  # authIssuer:
+  ## @param idp.clientID OIDC client ID for the IdP management client.
+  ##
+  clientID: ""
 
-  # Keycloak
-  # adminEndpoint:
-  # tokenEndpoint:
+  ## @param idp.clientSecret OIDC client secret. Prefer idp.secretKeyRef.
+  ##
+  clientSecret: ""
+
+  ## @param idp.secretKeyRef Reference a Secret holding the IdP management client secret.
+  ##
+  secretKeyRef:
+    {}
+    # name: idp-credentials
+    # key: clientSecret
+
+  ## @param idp.grantType OAuth2 grant type for the IdP management client.
+  ##
+  grantType: client_credentials
+
+  ## @param idp.tokenEndpoint OIDC token endpoint used by the IdP manager and auth flows.
+  ##
+  tokenEndpoint: ""
+
+  ## @param idp.adminEndpoint IdP admin API endpoint (e.g. Keycloak admin REST URL).
+  ##
+  adminEndpoint: ""
+
+  ## @param idp.audience Auth0 API audience (Auth0 only).
+  ##
+  audience: ""
+
+  ## @param idp.authIssuer Auth0 issuer URL (Auth0 only).
+  ##
+  authIssuer: ""
+
+  ## @param idp.extraConfig Extra IdP manager configuration as a JSON object string.
+  ##
+  extraConfig: "{}"
 
 stun:
   ## @param stun.uri
@@ -270,6 +349,37 @@ management:
   ## @param management.dnsDomain
   ##
   dnsDomain: netbird.selfhosted
+
+  ## @param management.disableDefaultPolicy Disable the default "allow-all" group policy on new accounts.
+  ##
+  disableDefaultPolicy: false
+
+  ## @param management.idpSignKeyRefreshEnabled Periodically refresh the IdP token signing keys.
+  ##
+  idpSignKeyRefreshEnabled: false
+
+  # yamllint disable-line rule:line-length
+  ## @param management.dataStoreEncryptionKey Key encrypting sensitive data store columns. Prefer dataStoreEncryptionKeySecretRef.
+  ##
+  dataStoreEncryptionKey: ""
+
+  # yamllint disable-line rule:line-length
+  ## @param management.dataStoreEncryptionKeySecretRef Reference a Secret holding the data store encryption key.
+  ##
+  dataStoreEncryptionKeySecretRef:
+    {}
+    # name: netbird-management-encryption-key
+    # key: encryptionKey
+
+  config:
+    # yamllint disable-line rule:line-length
+    ## @param management.config.image Image providing `envsubst` to render management.json from the template.
+    ##
+    image: nginx:1.27-alpine
+
+    ## @param management.config.pullPolicy Pull policy for the config-render init container.
+    ##
+    pullPolicy: IfNotPresent
 
   ## @param management.database leave empty to use sqlite
   ##

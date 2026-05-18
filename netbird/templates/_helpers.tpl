@@ -136,3 +136,15 @@ Create the name of the relay service account to use
 {{- default "default" .Values.relay.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Render auth.pkce.redirectURLs as a comma-separated list of quoted JSON strings,
+ready to interpolate inside the management.json PKCE RedirectURLs array.
+*/}}
+{{- define "netbird.pkceRedirectURLs" -}}
+{{- $urls := list -}}
+{{- range .Values.auth.pkce.redirectURLs -}}
+{{- $urls = append $urls (printf "%q" .) -}}
+{{- end -}}
+{{- join "," $urls -}}
+{{- end -}}

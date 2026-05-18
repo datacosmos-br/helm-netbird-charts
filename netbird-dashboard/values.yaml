@@ -12,6 +12,21 @@ auth:
   ## @param auth.clientID OpenID Connect client ID.
   clientID: netbird-dashboard
 
+  ## @param auth.clientSecret OIDC client secret (confidential clients). Prefer auth.secretKeyRef.
+  clientSecret: ""
+
+  ## @param auth.secretKeyRef Reference a Secret holding the dashboard OIDC client secret.
+  secretKeyRef:
+    {}
+    # name: netbird-dashboard-credentials
+    # key: clientSecret
+
+  ## @param auth.redirectURI OIDC redirect URI path.
+  redirectURI: /nb-auth
+
+  ## @param auth.silentRedirectURI OIDC silent-renew redirect URI path.
+  silentRedirectURI: /nb-silent-auth
+
   ## @param auth.supportedScopes Supported OpenID scopes
   # - Auth0: openid profile email offline_access api email_verified
   # - Keycloak: openid profile email offline_access api
@@ -28,6 +43,9 @@ netbird:
 
   ## @param netbird.managementGrpcApiEndpoint
   managementGrpcApiEndpoint: http://localhost:8081
+
+  ## @param netbird.tokenSource Token source for the dashboard (empty, or "idToken" for some IdPs).
+  tokenSource: ""
 
   ## @param netbird.disableIPv6
   disableIPv6: true
