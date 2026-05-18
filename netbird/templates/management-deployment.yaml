@@ -122,12 +122,11 @@ spec:
               {{- else }}
               value: {{ .Values.idp.clientSecret | default "" | quote }}
               {{- end }}
+            # NetBird builds the IdP manager from ClientConfig + ExtraConfig
+            # (idp.go NewManager). ExtraConfig carries provider-specific keys;
+            # for Keycloak the AdminEndpoint is injected from idp.adminEndpoint.
             - name: NETBIRD_IDP_MGMT_EXTRA_CONFIG
-              value: {{ .Values.idp.extraConfig | default "{}" | quote }}
-            # Keycloak IdP manager — AdminEndpoint is required by the NetBird
-            # Keycloak manager (the flat ClientConfig does not carry it).
-            - name: NETBIRD_IDP_KEYCLOAK_ADMIN_ENDPOINT
-              value: {{ .Values.idp.adminEndpoint | default "" | quote }}
+              value: {{ include "netbird.idpExtraConfig" . | quote }}
             # Device authorization flow (CLI clients)
             - name: NETBIRD_AUTH_DEVICE_AUTH_PROVIDER
               value: {{ .Values.auth.device.provider | default "none" | quote }}
