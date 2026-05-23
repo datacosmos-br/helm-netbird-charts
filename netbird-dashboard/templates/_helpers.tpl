@@ -59,7 +59,7 @@ Selector labels
 */}}
 {{- define "netbird-dashboard.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "netbird-dashboard.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/instance: {{ include "netbird-dashboard.fullname" . }}
 {{- end }}
 
 {{/*
