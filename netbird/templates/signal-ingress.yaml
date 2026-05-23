@@ -18,15 +18,12 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "netbird.signal.labels" . | nindent 4 }}
-  {{- if or (.Values.annotations.grpc) (.Values.signal.ingress.annotations) }}
+  {{- /* serversscheme=h2c is applied to the signal Service (signal-service.yaml), */}}
+  {{- /* NOT here — Traefik reads serversscheme from the Service, not the Ingress. */}}
+  {{- with .Values.signal.ingress.annotations }}
   annotations:
+    {{- toYaml . | nindent 4 }}
   {{- end }}
-    {{- with .Values.annotations.grpc }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
-    {{- with .Values.signal.ingress.annotations }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
 spec:
   {{- if and .Values.signal.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.signal.ingress.className }}

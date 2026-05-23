@@ -4,6 +4,12 @@ metadata:
   name: {{ include "netbird.fullname" . }}-signal
   labels:
     {{- include "netbird.signal.labels" . | nindent 4 }}
+  {{- /* Signal is gRPC-only; serversscheme=h2c belongs on the Service so      */}}
+  {{- /* Traefik speaks HTTP/2 cleartext to the SignalExchange backend.        */}}
+  {{- with .Values.annotations.grpc }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   type: {{ .Values.signal.service.type }}
   ports:

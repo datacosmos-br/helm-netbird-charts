@@ -1,6 +1,6 @@
 {{- if .Values.management.ingress.enabled -}}
 {{- $fullName := printf "%s-management-grpc" (include "netbird.fullname" .) -}}
-{{- $serviceName := printf "%s-management" (include "netbird.fullname" .) -}}
+{{- $serviceName := printf "%s-management-grpc" (include "netbird.fullname" .) -}}
 {{- if and .Values.management.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.management.ingress.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.management.ingress.annotations "kubernetes.io/ingress.class" .Values.management.ingress.className}}
@@ -18,15 +18,13 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "netbird.management.labels" . | nindent 4 }}
-  {{- if or (.Values.annotations.grpc) (.Values.management.ingress.annotations)}}
+  {{- /* serversscheme=h2c is applied to the dedicated -management-grpc Service */}}
+  {{- /* (management-service-grpc.yaml), NOT here — Traefik reads it from the   */}}
+  {{- /* Service, not the Ingress.                                             */}}
+  {{- with .Values.management.ingress.annotations }}
   annotations:
+    {{- toYaml . | nindent 4 }}
   {{- end }}
-    {{- with .Values.annotations.grpc }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
-    {{- with .Values.management.ingress.annotations }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
 spec:
   {{- if and .Values.management.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.management.ingress.className }}

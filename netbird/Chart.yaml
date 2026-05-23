@@ -3,7 +3,7 @@ apiVersion: v2
 name: netbird
 description: NetBird VPN management platform
 type: application
-version: 0.16.3
+version: 0.16.4
 appVersion: "0.71.2"
 icon: https://avatars.githubusercontent.com/u/100464677
 annotations:
@@ -11,5 +11,7 @@ annotations:
   artifacthub.io/license: MIT
   artifacthub.io/prerelease: "true"
   artifacthub.io/changes: |
+    - kind: fixed
+      description: gRPC backends (management + signal) now carry serversscheme=h2c on the Service (not the Ingress); management gets a dedicated -management-grpc Service so REST /api stays HTTP/1.1
     - kind: fixed
       description: relay Service targetPort pointed at non-existent `http` port; now `websocket`

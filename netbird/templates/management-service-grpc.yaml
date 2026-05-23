@@ -1,0 +1,26 @@
+{{- if .Values.management.ingress.enabled -}}
+# Dedicated gRPC backend Service so Traefik speaks h2c ONLY to gRPC traffic.
+# The shared management Service multiplexes REST (/api) + gRPC on one port via
+# cmux (connection-level content-type matching); forcing serversscheme=h2c on the
+# shared Service would corrupt REST streams on reused HTTP/2 connections. A
+# separate Service lets the gRPC Ingress use h2c while /api stays HTTP/1.1.
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "netbird.fullname" . }}-management-grpc
+  labels:
+    {{- include "netbird.management.labels" . | nindent 4 }}
+  {{- with .Values.annotations.grpc }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.management.service.type }}
+  ports:
+    - port: {{ .Values.management.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: grpc
+  selector:
+    {{- include "netbird.management.selectorLabels" . | nindent 4 }}
+{{- end }}
