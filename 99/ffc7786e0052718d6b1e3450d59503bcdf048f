@@ -1,0 +1,28 @@
+netbird/templates/management-service-grpc.yaml
+  s_633369b9d97e7f::t_b4f1128de48fba 1-26
+netbird/templates/signal-ingress.yaml
+  s_633369b9d97e7f::t_9795e7b21a6302 21-23,26
+netbird/Chart.yaml
+  s_633369b9d97e7f::t_84ce73c26b5b14 6,14-15
+netbird/templates/signal-service.yaml
+  s_633369b9d97e7f::t_4f11d4f690c1e1 7-12
+netbird/templates/management-ingress-grpc.yaml
+  s_633369b9d97e7f::t_20f271e7f9274b 3
+  s_633369b9d97e7f::t_6cdfbfda23276e 21-24,27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "99ffc7786e0052718d6b1e3450d59503bcdf048f",
+  "prompts": {},
+  "sessions": {
+    "s_633369b9d97e7f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "68e36916-c90c-4036-94db-d7927d332676",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Marlon Costa <marlon.costa@datacosmos.com.br>"
+    }
+  }
+}
